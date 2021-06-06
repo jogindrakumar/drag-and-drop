@@ -106,11 +106,34 @@ function updateDOM() {
   // Complete Column
   // On Hold Column
   // Run getSavedColumns only once, Update Local Storage
+  updatedOnLoad = true;
+  updateSavedColumns();
 }
+
+// Allows array to reflect Drag and drop items
+function rebuildArrays() {
+  backlogListArray = [];
+  for (let i = 0; i < backlogList.children.length; i++) {
+    backlogListArray.push(backlogList.children[i].textContent);
+  }
+  progressListArray = [];
+  for (let i = 0; i < progressList.children.length; i++) {
+    progressListArray.push(progressList.children[i].textContent);
+  }
+  completeListArray = [];
+  for (let i = 0; i < completeList.children.length; i++) {
+    completeListArray.push(completeList.children[i].textContent);
+  }
+  onHoldListArray = [];
+  for (let i = 0; i < onHoldList.children.length; i++) {
+    onHoldListArray.push(onHoldList.children[i].textContent);
+  }
+  updateDOM();
+}
+
 // When Item start Dragging
 function drag(e) {
   draggedItem = e.target;
-  console.log("draggedItem", draggedItem);
 }
 // Column Allows for item to drop
 function allowDrop(e) {
@@ -122,7 +145,7 @@ function dragEnter(column) {
   listColumns[column].classList.add("over");
   currentColumn = column;
 }
-
+``
 //Dropping Item in column
 function drop(e) {
   e.preventDefault();
@@ -133,6 +156,7 @@ function drop(e) {
   //Add Item to column
   const parent = listColumns[currentColumn];
   parent.appendChild(draggedItem);
+  rebuildArrays();
 }
 
 // On load
